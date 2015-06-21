@@ -11,7 +11,8 @@
 
 class Tank;
 
-using TankVector = QVector<std::shared_ptr<Tank>>;
+using TankPtr = std::shared_ptr<Tank>;
+using TankVector = QVector<TankPtr>;
 
 class Tank : public QObject, public QGraphicsPixmapItem
 {
@@ -20,6 +21,10 @@ public:
     explicit Tank(QObject *parent = 0);
 
     bool update_state(AmmoVector& ammo, double dt);
+
+    // Returns the closest ammo to this tank
+    AmmoPtr get_closest_ammo() const { return m_closest_ammo; }
+
 private:
     // ********** Member variables ********** /
 
@@ -34,6 +39,8 @@ private:
     QVector2D m_position;
     // Direction in which the tank is looking
     QVector2D m_direction;
+    // Closes ammo to this tank
+    AmmoPtr m_closest_ammo;
 
     // ******** Member Functions ********
     // Update direction vector
@@ -41,7 +48,7 @@ private:
     // Change the tanks position based on speed and direction
     void update_position(double speed, double dt);
     // Find closest object to this tank
-    void find_closest_ammo(AmmoVector& ammo);
+    AmmoPtr find_closest_ammo(AmmoVector& ammo);
 
 signals:
 

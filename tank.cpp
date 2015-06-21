@@ -9,12 +9,13 @@
 const double ANGLE_OFFSET = 90.0;
 
 Tank::Tank(QObject *parent) : QObject(parent), QGraphicsPixmapItem(),
-    m_left_track(50.0),
-    m_right_track(50.05),
+    m_left_track(3.0),
+    m_right_track(3.01),
     m_rotation(rand_float_n1_to_1() * 2 * M_PI),
     m_position(std::abs(Globs::SCREEN_WIDTH * rand_float()),
                std::abs(Globs::SCREEN_HEIGHT * rand_float())),
-    m_direction(std::sin(m_rotation), -std::cos(m_rotation))
+    m_direction(std::sin(m_rotation), -std::cos(m_rotation)),
+    m_closest_ammo()
 {
     setFlag(QGraphicsItem::ItemIsFocusable);
     // draw graphics
@@ -30,6 +31,8 @@ Tank::Tank(QObject *parent) : QObject(parent), QGraphicsPixmapItem(),
 
 bool Tank::update_state(AmmoVector& ammo, double dt)
 {
+    m_closest_ammo = find_closest_ammo(ammo);
+
     // TODO: Calculate the brains input, get the
     // output here and update the tanks state
     double speed = m_left_track + m_right_track;
@@ -50,7 +53,7 @@ void Tank::update_position(double speed, double dt)
 {
 //    qDebug() << "Delta" << dt;
 
-    QVector2D translate = m_direction * speed * dt;
+    QVector2D translate = m_direction * speed;
     translate.setY(-translate.y());
     m_position += translate;
 
@@ -77,12 +80,29 @@ void Tank::update_position(double speed, double dt)
     setPos(m_position.x(), m_position.y());
 }
 
-void Tank::find_closest_ammo(AmmoVector& ammo)
+AmmoPtr Tank::find_closest_ammo(AmmoVector& ammo)
 {
-    for(auto& a : ammo)
+    auto get_distance = [this](AmmoPtr closest)
     {
-        a->scenePos();
+        // not going to perform square root operation
+        double y_diff = m_position.y() - closest->scenePos().y();
+        double x_diff = m_position.x() - closest->scenePos().x();
+        double distance = (y_diff * y_diff) + (x_diff * x_diff);
+        return distance;
+    };
+
+    AmmoPtr closest;
+    double min_distance = RAND_MAX;
+    for(AmmoPtr a : ammo)
+    {
+        double distance_to_a = get_distance(a);
+        if(distance_to_a < min_distance)
+        {
+            closest = a;
+            min_distance = distance_to_a;
+        }
     }
+    return closest;
 }
 
 void Tank::update_direction()

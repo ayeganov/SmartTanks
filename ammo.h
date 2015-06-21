@@ -9,7 +9,8 @@
 
 class Ammo;
 
-using AmmoVector = QVector<std::shared_ptr<Ammo>>;
+using AmmoPtr = std::shared_ptr<Ammo>;
+using AmmoVector = QVector<AmmoPtr>;
 
 class Ammo : public QObject, public QGraphicsPixmapItem
 {

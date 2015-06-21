@@ -5,7 +5,7 @@
 
 GameView::GameView(): QGraphicsView(),
  m_scene(new QGraphicsScene(this)),
- m_controller(new Controller(Globs::NUM_TANKS))
+ m_controller(new Controller(Globs::NUM_TANKS, m_scene.get()))
 {
     // set scene size
     m_scene->setSceneRect(0, 0, Globs::SCREEN_WIDTH, Globs::SCREEN_HEIGHT);

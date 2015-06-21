@@ -6,13 +6,12 @@
 #include "utils.h"
 
 #include <QTimer>
-#include <QVector>
 
 class Controller: public QObject
 {
     Q_OBJECT
 public:
-    Controller(int num_tanks);
+    Controller(int num_tanks, QGraphicsScene* scene);
 
     const TankVector& get_tanks() const;
     const AmmoVector& get_ammo() const;
@@ -22,6 +21,7 @@ public slots:
 
 private:
     // *********** VARS ***********
+    QGraphicsScene* m_scene;
     int m_num_tanks;
     TankVector m_tanks;
     AmmoVector m_ammo;

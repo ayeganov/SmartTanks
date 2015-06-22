@@ -1,2 +1,2 @@
 # SmartTanks
-This project demonstrates the usage of an evolving neural network.
+This project demonstrates the usage of a genetically optimized neural network.

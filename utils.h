@@ -42,6 +42,15 @@ T clamp_value(T value, T min, T max)
 }
 
 /**
+ * @brief Calculate sigmoid function output
+ * @param input - value to map to sigmoid curve
+ * @param response - This number controls the shape of the curve.
+ *                   Higher values produce flatter curve, lower steeper.
+ * @return sigmoid output
+ */
+double sigmoid(double input, double response);
+
+/**
  * @brief The TimeDelta class knows how much time has
  * passed since last call to get_time_delta.
  */

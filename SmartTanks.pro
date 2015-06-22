@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     controller.cpp \
     utils.cpp \
     tank.cpp \
-    ammo.cpp
+    ammo.cpp \
+    neuralnet.cpp
 
 HEADERS  += \
     gameview.h \
@@ -25,7 +26,8 @@ HEADERS  += \
     utils.h \
     tank.h \
     globals.h \
-    ammo.h
+    ammo.h \
+    neuralnet.h
 CONFIG += c++11
 
 FORMS    +=

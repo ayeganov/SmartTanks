@@ -28,6 +28,10 @@ double vector2d_to_angle(double y, double x)
     return std::atan2(y, x) * 180.0 / M_PI;
 }
 
+double sigmoid(double input, double response)
+{
+    return 1 / (1 + std::exp(-input/response));
+}
 
 TimeDelta::TimeDelta()
  : m_last_delta(Clock::now())

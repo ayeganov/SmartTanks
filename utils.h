@@ -15,6 +15,16 @@
 double rand_float(double low = 0.0, double high = 1.0);
 
 /**
+ * @brief Calculate a random integer value in a given range, inclusive.
+ *
+ * @param low - low end of the region
+ * @param high - high end of the region
+ *
+ * @return integer value between 'low' and 'high' values
+ */
+int rand_int(int low =0, int high = 10);
+
+/**
  * @brief Calculate a random floating value between -1.0 and 1.0
  * @return random value between -1.0 and 1.0
  */

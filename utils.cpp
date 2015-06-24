@@ -18,6 +18,11 @@ double rand_float(double low, double high)
     return low + (high - low) * rand_val;
 }
 
+int rand_int(int low, int high)
+{
+    return static_cast<int>(rand_float((double)low, (double)high));
+}
+
 double rand_float_n1_to_1()
 {
     return rand_float(-1.0, 1.0);

@@ -2,10 +2,12 @@
 #include "tank.h"
 #include "globals.h"
 
+#include <QDebug>
 
 GameView::GameView(): QGraphicsView(),
  m_scene(new QGraphicsScene(this)),
- m_controller(new Controller(m_scene.get()))
+ m_controller(new Controller(m_scene.get())),
+ m_accelerated(false)
 {
     // set scene size
     m_scene->setSceneRect(0, 0, Globs::SCREEN_WIDTH, Globs::SCREEN_HEIGHT);
@@ -27,5 +29,21 @@ GameView::GameView(): QGraphicsView(),
     for(auto ammo : m_controller->get_ammo())
     {
         m_scene->addItem(ammo.get());
+    }
+
+    m_controller->start_loop(Globs::FPS);
+}
+
+void GameView::keyPressEvent(QKeyEvent *event)
+{
+    if(!m_accelerated)
+    {
+        m_accelerated = true;
+        m_controller->set_interval(1);
+    }
+    else
+    {
+        m_controller = false;
+        m_controller->set_interval(1000);
     }
 }

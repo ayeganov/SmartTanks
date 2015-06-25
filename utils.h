@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <chrono>
 
+#include <QVector2D>
+
 /**
  * @brief Calculate a random floating value in a given range, inclusive.
  *
@@ -59,6 +61,8 @@ T clamp_value(T value, T min, T max)
  * @return sigmoid output
  */
 double sigmoid(double input, double response);
+
+int vector_sign(QVector2D& v1, QVector2D& v2);
 
 /**
  * @brief The TimeDelta class knows how much time has

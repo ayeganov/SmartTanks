@@ -38,6 +38,12 @@ double sigmoid(double input, double response)
     return 1 / (1 + std::exp(-input/response));
 }
 
+int vector_sign(QVector2D &v1, QVector2D &v2)
+{
+    bool val = (v1.y() * v2.x()) > (v1.x() * v2.y());
+    return val ? 1 : -1;
+}
+
 TimeDelta::TimeDelta()
  : m_last_delta(Clock::now())
 {

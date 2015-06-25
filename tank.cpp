@@ -10,12 +10,12 @@
 const double ANGLE_OFFSET = 90.0;
 
 Tank::Tank(QObject *parent) : QObject(parent), QGraphicsPixmapItem(),
-    m_brain(),
-    m_left_track(3.0),
-    m_right_track(3.01),
-    m_rotation(rand_float_n1_to_1() * 2 * M_PI),
     m_position(std::abs(Globs::SCREEN_WIDTH * rand_float()),
                std::abs(Globs::SCREEN_HEIGHT * rand_float())),
+    m_brain(),
+    m_left_track(3.0),
+    m_right_track(3.0),
+    m_rotation(rand_float_n1_to_1() * 2 * M_PI),
     m_direction(std::sin(m_rotation), -std::cos(m_rotation)),
     m_closest_ammo()
 {
@@ -35,16 +35,17 @@ bool Tank::update_state(AmmoVector& ammo, double dt)
 {
     m_closest_ammo = find_closest_ammo(ammo);
 
-    QVector2D ammo_direction = QVector2D(m_closest_ammo->x(), m_closest_ammo->y()) - m_position;
+    QVector2D ammo_vector(m_closest_ammo->x(), m_closest_ammo->y());
+    QVector2D ammo_direction = ammo_vector - m_position;
     ammo_direction.normalize();
-    double dot = QVector2D::dotProduct(m_direction, ammo_direction);
 
-    QVector<double> track_speeds = m_brain.process_input({dot});
+    double dot = QVector2D::dotProduct(m_direction, ammo_direction);
+    int sign = vector_sign(m_direction, ammo_direction);
+
+    QVector<double> track_speeds = m_brain.process_input({sign * dot});
 
     m_left_track = track_speeds[0];
     m_right_track = track_speeds[1];
-    // TODO: Calculate the brains input, get the
-    // output here and update the tanks state
     double speed = m_left_track + m_right_track;
 
     // rotation force needs to be updated

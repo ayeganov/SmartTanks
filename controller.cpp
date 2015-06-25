@@ -16,15 +16,16 @@ Controller::Controller(QGraphicsScene* scene)
       m_time_delta(),
       m_tick_count(0),
       m_gen_alg(Globs::MUTATION, Globs::CROSSOVER, Globs::POPULATION),
+      m_selected_tank(0, 0, 10, 10),
       m_best_tank(0, 0, 10, 10),
       m_closest_ammo(0, 0, 20, 20)
 {
     QTime time = QTime::currentTime();
     qsrand((uint)time.msec());
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(update()));
+    m_scene->addItem(&m_selected_tank);
     m_scene->addItem(&m_best_tank);
     m_scene->addItem(&m_closest_ammo);
-    m_timer.start(1000 / Globs::FPS);
 }
 
 const Tank::TankVector& Controller::get_tanks() const
@@ -77,13 +78,18 @@ void Controller::update()
 
     if(m_tick_count < Globs::GENERATION_TICKS)
     {
+        Tank::Ptr selected_tank(m_tanks[0]);
         Tank::Ptr best_tank(m_tanks[0]);
         for(Tank::Ptr tank : m_tanks)
         {
             tank->update_state(m_ammo, time_delta);
-            if(tank->get_brain().get_fitness() > best_tank->get_brain().get_fitness())
+            if(tank->get_brain().get_fitness() > selected_tank->get_brain().get_fitness())
             {
                 best_tank = tank;
+            }
+            if(tank->hasFocus())
+            {
+                selected_tank = tank;
             }
             if(pick_up_ammo(tank))
             {
@@ -95,9 +101,10 @@ void Controller::update()
             }
         }
 
-        // Draw ellipse on the best tank
+        // Draw ellipse on the selected tank
+        m_selected_tank.setPos(selected_tank->m_position.x(), selected_tank->m_position.y() - 20);
         m_best_tank.setPos(best_tank->m_position.x(), best_tank->m_position.y() - 20);
-        m_closest_ammo.setPos(best_tank->get_closest_ammo()->pos());
+        m_closest_ammo.setPos(selected_tank->get_closest_ammo()->pos());
     }
     else
     {

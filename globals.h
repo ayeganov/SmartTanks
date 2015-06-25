@@ -14,7 +14,7 @@ namespace Globs
     const QVector<int> TOPOLOGY{10, 2};
     const int NUM_INPUTS = 1;
     const double BIAS = -1.0;
-    const double RESPONSE = 1.0;
+    const double RESPONSE = 0.5;
 
     // Genetic parameters
     const int NUM_ELITES = 2;

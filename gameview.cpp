@@ -31,19 +31,23 @@ GameView::GameView(): QGraphicsView(),
         m_scene->addItem(ammo.get());
     }
 
-    m_controller->start_loop(Globs::FPS);
+    emit m_controller->start_loop(static_cast<int>(1000/Globs::FPS));
 }
 
 void GameView::keyPressEvent(QKeyEvent *event)
 {
-    if(!m_accelerated)
+    qDebug() << event->key();
+    if(event->key() == Qt::Key_Space)
     {
-        m_accelerated = true;
-        m_controller->set_interval(1);
-    }
-    else
-    {
-        m_controller = false;
-        m_controller->set_interval(1000);
+        if(!m_accelerated)
+        {
+            m_accelerated = true;
+            emit m_controller->start_loop(1);
+        }
+        else
+        {
+            m_accelerated = false;
+            emit m_controller->start_loop(1000/Globs::FPS);
+        }
     }
 }

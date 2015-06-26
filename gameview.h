@@ -8,6 +8,7 @@
 #include <QGraphicsView>
 #include <QKeyEvent>
 
+
 typedef std::shared_ptr<QGraphicsScene> ScenePtr;
 typedef std::shared_ptr<Controller> ControllerPtr;
 

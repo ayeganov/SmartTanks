@@ -40,9 +40,9 @@ bool Tank::update_state(AmmoVector& ammo, double dt)
     ammo_direction.normalize();
 
     double dot = QVector2D::dotProduct(m_direction, ammo_direction);
-    int sign = vector_sign(m_direction, ammo_direction);
+//    int sign = vector_sign(m_direction, ammo_direction);
 
-    QVector<double> track_speeds = m_brain.process_input({sign * dot});
+    QVector<double> track_speeds = m_brain.process_input({dot});
 
     m_left_track = track_speeds[0];
     m_right_track = track_speeds[1];
@@ -101,7 +101,7 @@ AmmoPtr Tank::find_closest_ammo(AmmoVector& ammo)
     };
 
     AmmoPtr closest;
-    double min_distance = RAND_MAX;
+    double min_distance = 9999999;
     for(AmmoPtr a : ammo)
     {
         double distance_to_a = get_distance(a);

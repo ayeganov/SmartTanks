@@ -6,23 +6,26 @@
 #include <QtGlobal>
 #include <QDebug>
 
-Controller::Controller(QGraphicsScene* scene)
-    : m_scene(scene),
-      m_num_tanks(Globs::POPULATION),
-      m_num_ammo(Globs::NUM_AMMO),
-      m_tanks(create_tanks()),
-      m_ammo(create_ammo()),
-      m_timer(this),
-      m_time_delta(),
-      m_tick_count(0),
-      m_gen_alg(Globs::MUTATION, Globs::CROSSOVER, Globs::POPULATION),
-      m_selected_tank(0, 0, 10, 10),
-      m_best_tank(0, 0, 10, 10),
-      m_closest_ammo(0, 0, 20, 20)
+Controller::Controller(QGraphicsScene* scene) : QObject(),
+ m_scene(scene),
+ m_num_tanks(Globs::POPULATION),
+ m_num_ammo(Globs::NUM_AMMO),
+ m_tanks(create_tanks()),
+ m_ammo(create_ammo()),
+ m_timer(),
+ m_time_delta(),
+ m_tick_count(0),
+ m_gen_alg(Globs::MUTATION, Globs::CROSSOVER, Globs::POPULATION),
+ m_selected_tank(0, 0, 10, 10),
+ m_best_tank(0, 0, 10, 10),
+ m_closest_ammo(0, 0, 20, 20)
 {
     QTime time = QTime::currentTime();
     qsrand((uint)time.msec());
+
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(update()));
+    connect(this, SIGNAL(start_loop(int)), &m_timer, SLOT(start(int)));
+
     m_scene->addItem(&m_selected_tank);
     m_scene->addItem(&m_best_tank);
     m_scene->addItem(&m_closest_ammo);

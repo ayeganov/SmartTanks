@@ -36,7 +36,6 @@ GameView::GameView(): QGraphicsView(),
 
 void GameView::keyPressEvent(QKeyEvent *event)
 {
-    qDebug() << event->key();
     if(event->key() == Qt::Key_Space)
     {
         if(!m_accelerated)
